@@ -13,8 +13,12 @@ fn main() {
                 None => { file_name.clone() }
             };
 
-            let mut grid = read_grid::read_from(file_name);
-            println!("{:?}", grid);
+            let mut grid = read_grid::read_from(file_name).unwrap();
+            solver::solve(&mut grid);
+
+            for row in &grid {
+                println!("{:?}", row);
+            }
         }
     }
 }
