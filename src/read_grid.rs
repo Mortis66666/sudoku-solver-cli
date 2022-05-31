@@ -1,7 +1,7 @@
 use std::{fs, io};
 
 pub fn read_from(file_name: String) -> Result<Vec<Vec<u8>>, io::Error> {
-    let raw_lines: String = fs::read_to_string(file_name)?;
+    let raw_lines: String = fs::read_to_string(file_name)?.trim_end_matches("\r\n").to_owned();
 
     let mut grid: Vec<Vec<u8>> = Vec::new();
 
