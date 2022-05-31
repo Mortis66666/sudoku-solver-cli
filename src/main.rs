@@ -27,7 +27,7 @@ fn main() {
 
             match fs::write(&output, grid_str) {
                 Ok(_) => {
-                    println!("Success full solved sudoku, output at {}", output);
+                    println!("Successfully solved sudoku, output at {}", output);
                 }
                 Err(err) => {
                     eprintln!("Error:\n\t{}", err);
