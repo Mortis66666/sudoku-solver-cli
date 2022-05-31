@@ -1,0 +1,1 @@
+cargo run solve sudoku.txt --output "solution.txt"
