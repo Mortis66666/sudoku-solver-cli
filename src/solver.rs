@@ -1,7 +1,6 @@
 
 pub fn solve(grid: &mut Vec<Vec<u8>>) -> bool {
     let (x, y) = find_empty(&grid);
-    println!("({}, {})", x, y);
 
     if x == 9 {
         true
