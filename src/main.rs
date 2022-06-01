@@ -9,10 +9,7 @@ fn main() {
 
     match cli.cmd {
         SubCommand::Solve {file_name, output} => {
-            let output = match output {
-                Some(o) => { o },
-                None => { file_name.clone() }
-            };
+            let output = output.unwrap_or(file_name.clone());
 
             let mut grid = read_grid::read_from(file_name).unwrap();
             solver::solve(&mut grid);

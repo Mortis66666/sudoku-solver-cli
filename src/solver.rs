@@ -41,7 +41,7 @@ fn is_valid(grid: &Vec<Vec<u8>>, x: usize, y: usize, n: u8) -> bool {
 fn find_empty(grid: &Vec<Vec<u8>>) -> (usize, usize) {
     for (y, row) in grid.into_iter().enumerate() {
         for (x, cell) in row.into_iter().enumerate() {
-            if cell == &(0 as u8) {
+            if cell == &0 {
                 return (x as usize, y as usize);
             }
         }
