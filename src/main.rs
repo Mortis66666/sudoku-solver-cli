@@ -10,25 +10,38 @@ fn main() {
     match cli.cmd {
         SubCommand::Solve {file_name, output} => {
             let output = output.unwrap_or(file_name.clone());
+            let res = read_grid::read_from(file_name);
 
-            let mut grid = read_grid::read_from(file_name).unwrap();
-            solver::solve(&mut grid);
-            let mut grid_str = String::new();
-
-            for row in &grid {
-                for n in row {
-                    grid_str.push_str(&n.to_string()[..]);
+            if let Err(err) = res {
+                if let Some(inner) = err.get_ref() {
+                    return println!("{}", inner);
+                } else {
+                    return println!("{}", err);
                 }
-                grid_str.push_str("\n");
             }
 
-            match fs::write(&output, grid_str) {
-                Ok(_) => {
-                    println!("Successfully solved sudoku, output at {}", output);
+            let mut grid = res.unwrap();
+
+            if solver::solve(&mut grid) {
+                let mut grid_str = String::new();
+
+                for row in &grid {
+                    for n in row {
+                        grid_str.push_str(&n.to_string()[..]);
+                    }
+                    grid_str.push_str("\n");
                 }
-                Err(err) => {
-                    eprintln!("Error:\n\t{}", err);
+    
+                match fs::write(&output, grid_str) {
+                    Ok(_) => {
+                        println!("Successfully solved sudoku, output at {}", output);
+                    }
+                    Err(err) => {
+                        eprintln!("Error:\n\t{}", err);
+                    }
                 }
+            } else {
+                println!("Can't solve grid, probably because the grid is invalid");
             }
         }
     }
