@@ -5,7 +5,7 @@ pub fn read_from(file_name: String) -> Result<Vec<Vec<u8>>, io::Error> {
 
     let mut grid: Vec<Vec<u8>> = Vec::new();
 
-    for line in raw_lines.split("\n") {
+    for line in raw_lines.lines() {
         let mut row: Vec<u8> = Vec::new();
         
         for c in line.chars() {
