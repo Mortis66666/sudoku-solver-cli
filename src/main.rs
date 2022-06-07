@@ -9,7 +9,7 @@ fn main() {
 
     match cli.cmd {
         SubCommand::Solve {file_name, output} => {
-            let output = output.unwrap_or(file_name.clone());
+            let output = output.unwrap_or_else(|| file_name.clone());
             let res = read_grid::read_from(file_name);
 
             if let Err(err) = res {
@@ -29,7 +29,7 @@ fn main() {
                     for n in row {
                         grid_str.push_str(&n.to_string()[..]);
                     }
-                    grid_str.push_str("\n");
+                    grid_str.push('\n');
                 }
     
                 match fs::write(&output, grid_str) {
