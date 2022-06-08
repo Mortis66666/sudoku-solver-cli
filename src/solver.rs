@@ -1,8 +1,8 @@
 
 pub fn solve(grid: &mut Vec<Vec<u8>>) -> bool {
 
-    if let Some((x, y)) = find_empty(&grid) { // If found something
-        for i in 1..10 as u8 { // Test every number (1 to 9)
+    if let Some((x, y)) = find_empty(grid) { // If found something
+        for i in 1..10 { // Test every number (1 to 9)
             if is_valid(grid, x, y, i) {
                 grid[y][x] = i;
 
@@ -19,9 +19,9 @@ pub fn solve(grid: &mut Vec<Vec<u8>>) -> bool {
     }
 }
 
-fn is_valid(grid: &Vec<Vec<u8>>, x: usize, y: usize, n: u8) -> bool {
+fn is_valid(grid: &[Vec<u8>], x: usize, y: usize, n: u8) -> bool {
     // Check row + column
-    for i in 0..9 as usize {
+    for i in 0..9 {
         // Check if the ith element of the row and column is equals to n
         if grid[y][i] == n || grid[i][x] == n {
             return false;
@@ -42,10 +42,10 @@ fn is_valid(grid: &Vec<Vec<u8>>, x: usize, y: usize, n: u8) -> bool {
     true // If everythin is ok return true
 }
 
-fn find_empty(grid: &Vec<Vec<u8>>) -> Option<(usize, usize)> {
+fn find_empty(grid: &[Vec<u8>]) -> Option<(usize, usize)> {
     // Loop through each cell and find the first 0
-    for (y, row) in grid.into_iter().enumerate() {
-        for (x, cell) in row.into_iter().enumerate() {
+    for (y, row) in grid.iter().enumerate() {
+        for (x, cell) in row.iter().enumerate() {
             if cell == &0 {
                 return Some((x, y));
             }

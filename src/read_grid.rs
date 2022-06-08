@@ -17,16 +17,16 @@ pub fn read_from(file_name: String) -> Result<Vec<Vec<u8>>, io::Error> {
         grid.push(row);
     };
 
-    for (i, row) in (&mut grid).into_iter().enumerate() {
+    for (i, row) in grid.iter_mut().enumerate() {
         if row.len() != 9 {
             return make_error(format!("Expected 9 digits at row {}, found {}", i+1, row.len()));
         }
     }
 
-    if grid.len() != 9 {
-        make_error(format!("Expected 9 rows, found {}", grid.len()))
-    } else {
+    if grid.len() == 9 {
         Ok(grid)
+    } else {
+        make_error(format!("Expected 9 rows, found {}", grid.len()))
     }
 }
 
