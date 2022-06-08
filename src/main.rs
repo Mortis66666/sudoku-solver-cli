@@ -1,14 +1,14 @@
 use clap::{Parser, Subcommand};
 use std::fs;
 
-mod solver;
 mod read_grid;
+mod solver;
 
 fn main() {
     let cli = Args::parse();
 
     match cli.cmd {
-        SubCommand::Solve {file_name, output} => {
+        SubCommand::Solve { file_name, output } => {
             let output = output.unwrap_or_else(|| file_name.clone());
             let res = read_grid::read_from(file_name);
 
@@ -31,7 +31,7 @@ fn main() {
                     }
                     grid_str.push('\n');
                 }
-    
+
                 match fs::write(&output, grid_str) {
                     Ok(_) => {
                         println!("Successfully solved sudoku, output at {}", output);
@@ -47,18 +47,17 @@ fn main() {
     }
 }
 
-
 #[derive(Parser)]
 struct Args {
     #[clap(subcommand)]
-    cmd: SubCommand
+    cmd: SubCommand,
 }
 
 #[derive(Subcommand)]
 enum SubCommand {
     Solve {
         file_name: String,
-        #[clap(short='o', long="output")]
-        output: Option<String>
-    }
+        #[clap(short = 'o', long = "output")]
+        output: Option<String>,
+    },
 }
