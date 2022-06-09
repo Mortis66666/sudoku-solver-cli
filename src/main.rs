@@ -1,22 +1,23 @@
 use clap::{Parser, Subcommand};
 use std::fs;
+use crate::solver::is_valid;
 
-mod solver;
 mod read_grid;
+mod solver;
 
 fn main() {
     let cli = Args::parse();
 
     match cli.cmd {
-        SubCommand::Solve {file_name, output} => {
+        SubCommand::Solve { file_name, output } => {
             let output = output.unwrap_or_else(|| file_name.clone());
             let res = read_grid::read_from(file_name);
 
             if let Err(err) = res {
-                if let Some(inner) = err.get_ref() {
-                    return println!("{}", inner);
+                return if let Some(inner) = err.get_ref() {
+                    println!("{}", inner)
                 } else {
-                    return println!("{}", err);
+                    println!("{}", err)
                 }
             }
 
@@ -44,6 +45,35 @@ fn main() {
                 println!("Can't solve grid, probably because the grid is invalid");
             }
         }
+        SubCommand::Check { file_name } => {
+            let res = read_grid::read_from(file_name);
+
+            if let Err(err) = res {
+                return if let Some(inner) = err.get_ref() {
+                    println!("{}", inner)
+                } else {
+                    println!("{}", err)
+                }
+            }
+
+            let mut grid = res.unwrap();
+
+            for y in 0..9 {
+                for x in 0..9 {
+                    let n = grid[y][x];
+                    if n != 0 {
+                        grid[y][x] = 0;
+                        let (res, message) = is_valid(&mut grid, x, y, n.to_owned());
+                        if !res {
+                            return println!("{}", message);
+                        }
+                        grid[y][x] = n.to_owned();
+                    }
+                }
+            }
+
+            println!("Grid is ok!")
+        }
     }
 }
 
@@ -60,5 +90,8 @@ enum SubCommand {
         file_name: String,
         #[clap(short='o', long="output")]
         output: Option<String>
+    },
+    Check {
+        file_name: String,
     }
 }
