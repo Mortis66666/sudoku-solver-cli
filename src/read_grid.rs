@@ -15,7 +15,7 @@ pub fn read_from(file_name: String) -> Result<Vec<Vec<u8>>, io::Error> {
         }
 
         grid.push(row);
-    };
+    }
 
     for (i, row) in grid.iter_mut().enumerate() {
         if row.len() != 9 {
